@@ -21,6 +21,4 @@ The application outputs the following:
 
 ### Application is hosted at https://huggingface.co/spaces/akhaliq/MLP_Visualizer
 
-<br>
-
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
