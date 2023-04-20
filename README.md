@@ -1,13 +1,4 @@
----
-title: MLP Visualize
-emoji: 📊
-colorFrom: green
-colorTo: indigo
-sdk: streamlit
-sdk_version: 1.19.0
-app_file: app.py
-pinned: false
----
+# MLP Visualizer
 
 An Application that can be used to visualize the predictions of a Multi-Layer Perceptron (MLP) regressor by vaying various aspect of the model.
 
@@ -30,8 +21,6 @@ The application outputs the following:
 <br>
 
 ## Application is hosted at https://huggingface.co/spaces/akhaliq/MLP_Visualizer
-
-<br>
 
 <br>
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
