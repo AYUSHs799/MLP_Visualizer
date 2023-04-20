@@ -18,8 +18,10 @@ The application outputs the following:
 * Errors in the predictions.
 * Training and Testing Datasets.
 
+<br>
 
-## Application is hosted at https://huggingface.co/spaces/akhaliq/MLP_Visualizer
+### Application is hosted at https://huggingface.co/spaces/akhaliq/MLP_Visualizer
 
 <br>
+
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
