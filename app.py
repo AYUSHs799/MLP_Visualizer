@@ -8,6 +8,7 @@ from keras.models import Sequential
 import matplotlib.pyplot as plt
 from keras.layers import Dense
 import streamlit as st
+import io
 
 
 
@@ -43,7 +44,17 @@ def model_MLP(X_train,y_train,X_test,layers, nodes, activation, solver, rate, it
     y_hat = model.predict(X_test)
 
     # Return model.
-    return y_hat
+    return y_hat, model
+
+
+
+def get_model_summary(model):
+    stream = io.StringIO()
+    model.summary(print_fn=lambda x: stream.write(x + '\n'))
+    summary_string = stream.getvalue()
+    stream.close()
+    return summary_string
+
 
 
 if __name__ == '__main__':
@@ -85,6 +96,14 @@ if __name__ == '__main__':
     # Split data into training and test sets.    
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split,random_state=42)
 
+    # Predicting the test data.
+    y_hat,model = model_MLP(X_train,y_train,X_test,layers, nodes, activation, solver, rate, iter)
+
+    # Printing Model Architecture.
+    st.subheader('Model Architecture')
+    # summary = get_model_summary(model)
+    st.write(model.summary(print_fn=lambda x: st.text(x)))
+
     # Plotting the Prediction data.
     # creating a container to display the graphs.
     with st.container():
@@ -117,9 +136,6 @@ if __name__ == '__main__':
             # Plotting the test data.
             st.write('Test Data set')
 
-            # Predicting the test data.
-            y_hat = model_MLP(X_train,y_train,X_test,layers, nodes, activation, solver, rate, iter)
-
             fig2, ax2 = plt.subplots(1)
             ax2.scatter(X_test, y_test, label='test',color='blue',alpha=0.4)
             ax2.scatter(X_test, y_hat, label='prediction',c='red',alpha=0.6,edgecolors='black')
@@ -133,6 +149,7 @@ if __name__ == '__main__':
             # write the graph to the app.
             st.pyplot(fig2)
         
+
         # Printing the Errors.
         st.subheader('Errors')
 
