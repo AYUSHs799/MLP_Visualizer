@@ -8,9 +8,11 @@ from keras.models import Sequential
 import matplotlib.pyplot as plt
 from keras.layers import Dense
 import streamlit as st
+import numpy as np
 import io
 
-
+# set random seed
+np.random.seed(42)
 
 def model_MLP(X_train,y_train,X_test,layers, nodes, activation, solver, rate, iter):
     """Creates a MLP model and return the predictions"""
@@ -19,7 +21,7 @@ def model_MLP(X_train,y_train,X_test,layers, nodes, activation, solver, rate, it
     model = Sequential() 
 
     # Adding first layers.
-    model.add(Dense(nodes, activation=activation, input_dim=X_train.shape[1]))
+    model.add(Dense(nodes, activation=activation, input_dim=1))
 
     # Adding remaining hidden layers.
     for i in range(layers-1):
@@ -77,12 +79,12 @@ if __name__ == '__main__':
         # slider for number of hidden layers.                       
         layers = st.slider('Hidden Layers', min_value=1,max_value= 10,value=3,step=1) 
         # selectbox for activation function.              
-        activation = st.selectbox('Activation',('linear','relu','sigmoid','tanh'),index=1)                  
+        activation = st.selectbox('Activation (Output layer will always be linear)',('linear','relu','sigmoid','tanh'),index=2)                  
         
     with right_column:
 
         # slider for adding noise.
-        noise = st.slider('Noise', min_value=0,max_value= 100,value=50,step=10)
+        noise = st.slider('Noise', min_value=0,max_value= 100,value=20,step=10)
         # slider for test-train split.                     
         split = st.slider('Test-Train Split', min_value=0.1,max_value= 0.9,value=0.3,step=0.1) 
         # selectbox for solver/optimizer.     
@@ -91,7 +93,8 @@ if __name__ == '__main__':
         rate = float(st.selectbox('Learning Rate',('0.001','0.003','0.01','0.03','0.1','0.3','1.0'),index=3))   
 
     # Generating regression data.
-    X, y = make_regression(n_samples=500, n_features=1, noise=noise,random_state=42,bias=3)
+    X=np.linspace(0,50,250)
+    y = X + np.sin(X)*X/5*noise/50*np.random.choice([0,0.5,1,1.5]) + np.random.normal(0,2,250)*noise/100
 
     # Split data into training and test sets.    
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=split,random_state=42)
@@ -101,7 +104,6 @@ if __name__ == '__main__':
 
     # Printing Model Architecture.
     st.subheader('Model Architecture')
-    # summary = get_model_summary(model)
     st.write(model.summary(print_fn=lambda x: st.text(x)))
 
     # Plotting the Prediction data.
@@ -130,6 +132,7 @@ if __name__ == '__main__':
             
             # write the graph to the app.
             st.pyplot(fig1)
+            plt.savefig('plot_1.jpg')
 
         with right_graph:
 
@@ -137,8 +140,12 @@ if __name__ == '__main__':
             st.write('Test Data set')
 
             fig2, ax2 = plt.subplots(1)
-            ax2.scatter(X_test, y_test, label='test',color='blue',alpha=0.4)
-            ax2.scatter(X_test, y_hat, label='prediction',c='red',alpha=0.6,edgecolors='black')
+            ax2.scatter(X_test, y_test, label='test',color='blue',alpha=0.6,edgecolors='black')
+
+            test = np.c_[(X_test,y_hat)]
+            test = test[test[:,0].argsort()]
+            ax2.plot(test[:,0],test[:,1], label='prediction',c='red',alpha=0.6,linewidth=2,marker='x')
+
 
             # setting the labels and title of the graph.
             ax2.set_xlabel('X')
@@ -148,10 +155,10 @@ if __name__ == '__main__':
             
             # write the graph to the app.
             st.pyplot(fig2)
-        
+            plt.savefig('plot_2.jpg')
 
         # Printing the Errors.
-        st.subheader('Errors')
+        st.subheader('Errors')      
 
         # Calculating the MSE.
         mse = mean_squared_error(y_test, y_hat, squared=False)
