@@ -19,6 +19,6 @@ The application outputs the following:
 * Training and Testing Datasets.
 
 
-### Application is hosted at https://huggingface.co/spaces/akhaliq/MLP_Visualizer
+### Application is hosted at https://huggingface.co/spaces/Ayushs799/MLP_Visualize
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
