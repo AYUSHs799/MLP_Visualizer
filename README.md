@@ -18,7 +18,6 @@ The application outputs the following:
 * Errors in the predictions.
 * Training and Testing Datasets.
 
+----
 
 ### Application is hosted at https://huggingface.co/spaces/Ayushs799/MLP_Visualize
-
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
